@@ -36,6 +36,7 @@
 body {
   font-family: "Science Gothic", sans-serif;
   margin: 0;
+  background: #1d1d1d;
 }
 
 #root {
