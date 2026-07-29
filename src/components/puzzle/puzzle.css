@@ -1,0 +1,215 @@
+.board {
+    display: grid;
+    overflow: hidden;
+    transition: height 0.7s 1s ease-in;
+}
+
+.piece {
+    border: 1px solid #fff;
+    cursor: grab;
+    user-select: none;
+    filter: brightness(0.7);
+    transition:
+        border-color 0.5s 1s ease,
+        filter 0.5s 1s ease,
+        transform 0.5s 1s ease,
+        outline-color 0.5s 1s ease;
+}
+
+.piece:active {
+    cursor: grabbing;
+}
+
+.piece.locked {
+    cursor: default;
+    outline: 2px solid #5cd65c;
+    filter: brightness(1);
+}
+
+.piece.completed {
+    border-color: transparent;
+    outline-color: transparent;
+}
+
+.puzzle-card {
+    border: 10px solid;
+    border-color: transparent;
+    transition: all 1s 1s ease;
+
+    position: absolute;
+    backface-visibility: hidden;
+}
+
+.puzzle-card.completed {
+    border-color: #ffff;
+    position: relative;
+}
+
+.puzzle-card::after,
+.puzzle-card::before {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    background: #fff;
+    visibility: hidden;
+    opacity: 0;
+    transition: all 1s 1s ease-in;
+}
+.puzzle-card::before {
+    content: "";
+    top: 0;
+    height: 30px;
+}
+
+.puzzle-card::after {
+    content: "Твоя посмішка зводить мене з розуму!";
+    bottom: 0;
+    height: 90px;
+    padding: 16px;
+    text-align: left;
+    line-height: 110%;
+}
+
+.puzzle-card.completed::before,
+.puzzle-card.completed::after {
+    visibility: visible;
+    opacity: 1;
+    z-index: 1;
+}
+
+.card-scene.completed {
+    animation: pre-rotate 5s ease-in-out 3s;
+}
+
+@keyframes pre-rotate {
+    0% {
+        transform: rotate3d(0, 0, 0, 0deg);
+    }
+
+    20% {
+        transform: rotate3d(-0.1, 0.8, -0.1, 45deg);
+    }
+
+    40% {
+        transform: rotate3d(0, 0, 0, 0deg);
+    }
+
+    100% {
+        transform: rotate3d(0, 0, 0, 0deg);
+    }
+}
+
+.card-scene {
+    perspective: 1500px;
+    display: inline-block;
+}
+
+.puzzle-letter-wrapper {
+    position: relative;
+
+    transform-style: preserve-3d;
+    transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+
+    cursor: pointer;
+}
+
+.puzzle-letter-wrapper.back {
+    transform: rotateY(180deg);
+}
+
+.card-face {
+    position: absolute;
+    inset: 0;
+
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    overflow: hidden;
+}
+
+.back {
+    background: white;
+    transform: rotateY(180deg);
+}
+
+.puzzle-letter-wrapper:hover {
+    transform: scale(1.02);
+}
+
+.puzzle-letter-wrapper.back:hover {
+    transform: rotateY(180deg) scale(1.02);
+}
+
+.card-scene {
+    perspective: 1500px;
+}
+
+.puzzle-letter-wrapper.back {
+    transform: rotateY(180deg) rotateX(4deg);
+}
+
+.letter {
+    display: flex;
+    align-items: center;
+    justify-self: center;
+    height: 100%;
+    width: 70%;
+}
+
+/* START: puzzle image hint */
+.image-hint {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1000;
+}
+
+.image-hint::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.45s;
+}
+
+.image-hint img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 10px;
+    cursor: pointer;
+
+    transition:
+        width 1.6s cubic-bezier(0.22, 1, 0.36, 1),
+        height 1.6s cubic-bezier(0.22, 1, 0.36, 1),
+        top 1.6s cubic-bezier(0.22, 1, 0.36, 1),
+        left 1.6s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 1.6s cubic-bezier(0.22, 1, 0.36, 1),
+        border-radius 1.4s;
+
+    position: fixed;
+    top: 20px;
+    left: 20px;
+}
+
+.image-hint.active::before {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.image-hint.active img {
+    width: min(90vw, 700px);
+    height: min(90vh, 700px);
+    object-fit: contain;
+
+    top: 50%;
+    left: 50%;
+
+    transform: translate(-50%, -50%) scale(1);
+
+    border-radius: 20px;
+    overflow: hidden;
+}
+/* END: puzzle image hint */
